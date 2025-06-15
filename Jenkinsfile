@@ -23,7 +23,7 @@ pipeline {
         '''
 
         // Bloco seguro com credencial
-        withCredentials([usernamePassword(credentialsId: 'github-push-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+        withCredentials([usernamePassword(credentialsId: '766587d2-ba03-464f-9c67-cbf64fdc3531', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
           sh """
             git config user.name "jenkins-bot"
             git config user.email "jenkins@example.com"
