@@ -15,8 +15,9 @@ pipeline {
 
     stage('Bump Version') {
       steps {
-        sh '''mvn build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.nextPatchVersion} versions:commit
-'''
+        sh '''mvn build-helper:parse-version versions:set \\
+  -DnewVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | awk -F. \'{$NF+=1; print $1"."$2"."$NF}\') \\
+  versions:commit'''
         sh '''git add pom.xml
 git commit -m "chore: bump version [ci skip]"
 git push origin main
