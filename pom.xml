@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.foreach.case</groupId>
 	<artifactId>foreach-case</artifactId>
-	<version>0.0.19</version>
+	<version>0.0.20</version>
 	<name>foreach-case</name>
 	<description>foreach case projetct</description>
 	<url/>
