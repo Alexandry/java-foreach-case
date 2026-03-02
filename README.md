@@ -1,30 +1,97 @@
----
-name: legacy-mapping-kit
-description: Mapeia processos e componentes legados (Java/Spring/JPA/JDBC/SQL/DDL) extraindo regras, transformações, acesso a dados, lineage, integrações e documentação. Sempre com evidências. Mantém espaço para procedures.
----
+# comp_scaffold — cria pacote de documentação do componente
 
-# Legacy Mapping Kit
+Input:
+- component_id (default: svc-core-extrato)
+- tipo: svc|job|sp|etl|lib (default: svc)
 
-## Use cases
-- Mapear rotina legado ponta-a-ponta (processo)
-- Mapear componente legado (service/job/procedure/ETL)
-- Extrair regras e transformações do código/SQL
-- Catalogar DDL e relacionar com componentes
+Tarefa:
+1) Criar /docs/components/<component_id>/
+2) Criar os arquivos:
+- 00-overview.md
+- 01-interfaces.md
+- 02-data-access.md
+- 03-rules-transform.md
+- 04-lineage.md
+- 05-integrations.md
+- 06-procedures.md
+- 07-tests.md
+- 08-open-questions.md
+3) Atualizar /docs/catalogs/component-catalog.md adicionando o componente (se não existir)
 
-## Inputs esperados
-- Código Java (Spring/JPA/JDBC), configs, arquivos .sql
-- DDL (create table/view) em /schemas/db/ddl
-- Notas/transcrições em /docs/discovery/00-inbox
+Templates:
 
+00-overview.md
+# <component_id> — Overview
+- Tipo: <tipo>
+- Sistema: TODO (system_id)
+- Objetivo: TODO
+- Dono: TODO
+- Execução: (request/cron/manual/event) TODO
+- SLA/volumetria: TODO
+- Dependências: TODO
+- Riscos: TODO
+
+01-interfaces.md
+# Interfaces observáveis
+## Inputs
+- TODO
 ## Outputs
-- /docs/processes/<process_id>/*
-- /docs/components/<component_id>/*
-- Atualização em /docs/catalogs/*
+- TODO
+## Erros
+- TODO
 
-## Procedure (alto nível)
-1) Criar scaffold (processo e/ou componente)
-2) Extrair “interfaces observáveis” (inputs/outputs)
-3) Extrair acesso a dados (queries/tabelas/DDL)
-4) Extrair regras/transformações (com evidência)
-5) Construir lineage e integrações
-6) Registrar gaps (Open Questions) e riscos
+02-data-access.md
+# Data Access
+## Databases/Schemas
+- TODO
+## Tabelas lidas
+- TODO
+## Tabelas escritas
+- TODO
+## Queries encontradas (com Evidence)
+- TODO
+
+03-rules-transform.md
+# Rules & Transformations
+## Regras (com Evidence)
+- R-001: TODO
+## Transformações
+- T-001: TODO
+## De-Para/Enums
+- D-001: TODO
+
+04-lineage.md
+# Data Lineage
+## Lê -> Escreve
+- TODO
+## Side effects
+- TODO
+
+05-integrations.md
+# Integrações
+## REST/SOAP
+- TODO
+## Filas/Tópicos
+- TODO
+## Arquivos
+- TODO
+
+06-procedures.md
+# Procedures (espaço reservado)
+## Procedures chamadas pelo componente
+- TODO (nome, assinatura, Evidence)
+## Procedures a adicionar (se existirem no DB)
+- TODO
+## Scripts
+- /schemas/db/procs/ (colocar aqui)
+
+07-tests.md
+# Tests
+## Golden inputs/outputs
+- TODO
+## Casos críticos
+- TODO
+
+08-open-questions.md
+# Open Questions
+- Q1: TODO
