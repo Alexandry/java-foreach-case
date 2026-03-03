@@ -1,30 +1,34 @@
 ---
-name: legacy-mapping-kit
-description: Mapeia processos e componentes legados (Java/Spring/JPA/JDBC/SQL/DDL) extraindo regras, transformações, acesso a dados, lineage, integrações e documentação. Sempre com evidências. Mantém espaço para procedures.
+description: Legacy Mapping Kit - regras para mapear componentes legados (Java/Spring/JPA/JDBC/SQL/DDL) com evidências e documentação.
+globs:
+  - "**/*"
 ---
 
-# Legacy Mapping Kit
+# Legacy Mapping Kit — Regras
 
-## Use cases
-- Mapear rotina legado ponta-a-ponta (processo)
-- Mapear componente legado (service/job/procedure/ETL)
-- Extrair regras e transformações do código/SQL
-- Catalogar DDL e relacionar com componentes
+## Não negociáveis
+- Não inventar regra, campo, transformação, integração ou tabela sem evidência.
+- Toda regra/transformação deve conter:
+  - Evidence: caminho do arquivo + identificador (classe/método/query) + trecho.
+- Se faltar informação, registrar em /docs/components/<id>/08-open-questions.md.
 
-## Inputs esperados
-- Código Java (Spring/JPA/JDBC), configs, arquivos .sql
-- DDL (create table/view) em /schemas/db/ddl
-- Notas/transcrições em /docs/discovery/00-inbox
+## Segurança e dados
+- Em samples, mascarar dados sensíveis.
+- Evitar colar credenciais/hostnames. Foque em nomes lógicos (db/schema/tabela).
 
-## Outputs
-- /docs/processes/<process_id>/*
-- /docs/components/<component_id>/*
-- Atualização em /docs/catalogs/*
+## Onde escrever
+- Componentes: /docs/components/<component_id>/*
+- Processo: /docs/processes/<process_id>/*
+- SQL snippets: /samples/sql-snippets/
+- DDL: /schemas/db/ddl/
+- Procs: /schemas/db/procs/
 
-## Procedure (alto nível)
-1) Criar scaffold (processo e/ou componente)
-2) Extrair “interfaces observáveis” (inputs/outputs)
-3) Extrair acesso a dados (queries/tabelas/DDL)
-4) Extrair regras/transformações (com evidência)
-5) Construir lineage e integrações
-6) Registrar gaps (Open Questions) e riscos
+## Saída padrão quando eu pedir "mapear componente"
+Atualizar sempre:
+- 01-interfaces.md (inputs/outputs observáveis)
+- 02-data-access.md (db/schema/tabelas/queries)
+- 03-rules-transform.md (regras, de-para, transforms)
+- 04-lineage.md (lê/escreve + side effects)
+- 05-integrations.md (REST, fila, arquivos)
+- 06-procedures.md (mesmo que TODO)
+- 08-open-questions.md (gaps)
