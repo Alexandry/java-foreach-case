@@ -1,30 +1,39 @@
----
-name: legacy-mapping-kit
-description: Mapeia processos e componentes legados (Java/Spring/JPA/JDBC/SQL/DDL) extraindo regras, transformações, acesso a dados, lineage, integrações e documentação. Sempre com evidências. Mantém espaço para procedures.
----
+# process_scaffold — criar pacote do processo
 
-# Legacy Mapping Kit
+Input:
+- process_id (default: rotina-extrato)
 
-## Use cases
-- Mapear rotina legado ponta-a-ponta (processo)
-- Mapear componente legado (service/job/procedure/ETL)
-- Extrair regras e transformações do código/SQL
-- Catalogar DDL e relacionar com componentes
+Tarefa:
+Criar /docs/processes/<process_id>/
+- 00-process.md
+- 01-scope-sla.md
+- 02-components.md
+- 03-io-contract.md
+- 04-controls-audit.md
+- 05-rollout.md
 
-## Inputs esperados
-- Código Java (Spring/JPA/JDBC), configs, arquivos .sql
-- DDL (create table/view) em /schemas/db/ddl
-- Notas/transcrições em /docs/discovery/00-inbox
+Templates:
 
-## Outputs
-- /docs/processes/<process_id>/*
-- /docs/components/<component_id>/*
-- Atualização em /docs/catalogs/*
+00-process.md
+# <process_id> — Processo
+## Objetivo
+TODO
+## Gatilho
+cron/event/manual TODO
+## Etapas (alto nível)
+1. TODO
+2. TODO
+## Entradas/Saídas
+- Entrada: TODO
+- Saída: TODO
 
-## Procedure (alto nível)
-1) Criar scaffold (processo e/ou componente)
-2) Extrair “interfaces observáveis” (inputs/outputs)
-3) Extrair acesso a dados (queries/tabelas/DDL)
-4) Extrair regras/transformações (com evidência)
-5) Construir lineage e integrações
-6) Registrar gaps (Open Questions) e riscos
+02-components.md
+# Componentes participantes
+- TODO (linkar /docs/components/<id>/00-overview.md)
+
+04-controls-audit.md
+# Controles & Auditoria
+- Trilha de auditoria: TODO
+- Aprovações: TODO
+- Retenção: TODO
+- Reprocessamento/idempotência: TODO
