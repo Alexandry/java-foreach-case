@@ -1,22 +1,13 @@
----
-description: Roteiro de tarefas para a implementação da fase de consolidação do 3040.
-globs: *
----
-<task_flow>
-Siga estas etapas para construir o pipeline. SEMPRE atualize o `checklist.md` antes de codificar.
+Olá Cursor. Vamos iniciar o desenvolvimento do nosso pipeline de consolidação do Bacen 3040.
 
-- **Passo 0: Planejamento Inicial**
-  Crie o arquivo `checklist.md` detalhando as tarefas técnicas baseadas nos passos abaixo. Peça permissão ao usuário antes de iniciar o Passo 1.
+Por favor, leia e absorva todo o contexto dos arquivos na pasta .cursor/rules/, com atenção absoluta ao @00-workflow-rules.mdc e ao @skills-consolidation.mdc.
 
-- **Passo 1: Domínio e Mapeamento (`@agent-bacen-analyst` e `@agent-java-dev`)**
-  Analise os XMLs na pasta `insumos`. O usuário irá informar no chat quais arquivos pertencem ao Veículo 1 e quais pertencem ao Veículo 2. Crie os `Records` Java 21 correspondentes à árvore do 3040.
+Nossa estrutura de diretórios já está criada. Para o mapeamento inicial, aqui estão as premissas:
+-> Veículo Legal 1: Os arquivos de insumo de exemplo estão em src/main/resources/insumos/amostras/veiculo1/.
+-> Veículo Legal 2: Os arquivos de insumo de exemplo estão em src/main/resources/insumos/amostras/veiculo2/.
+-> Fonte da Verdade: O manual oficial está em docs/normativos/.
 
-- **Passo 2: Staging Area e Ingestão (`@agent-batch-architect` e `@agent-java-dev`)**
-  Crie o schema do banco H2. Implemente o Step particionado de ingestão (via `StaxEventItemReader`) para jogar os dados crus de até 2GB para as tabelas temporárias, associando cada registro ao seu respectivo Veículo Legal.
+⚠️ REGRA DE OURO E PROTEÇÃO DE MEMÓRIA: É ESTRITAMENTE PROIBIDO tentar ler ou indexar qualquer arquivo fora da pasta amostras/. Os arquivos reais na raiz de insumos/veiculo1 e insumos/veiculo2 possuem até 2GB e vão travar a sua engine. Use APENAS os arquivos menores das amostras para entender o layout de origem.
 
-- **Passo 3: Consolidação Paralela dos Veículos (`@agent-batch-architect` e `@agent-java-dev`)**
-  Crie um `Flow` paralelo no Spring Batch. Uma thread/branch orquestrará a geração do XML do Veículo 1, enquanto a outra processa o Veículo 2 simultaneamente.
-
-- **Passo 4: Escrita de Alta Performance**
-  Implemente a leitura paginada do H2 (`JdbcPagingItemReader`) com JOINs que trazem o Cliente complexo, e escreva nos arquivos finais via `StaxEventItemWriter` de forma contínua no disco, lidando corretamente com o `headerCallback` para as raízes do Bacen.
-</task_flow>
+Sua tarefa agora:
+Assuma as personas definidas (@agent-bacen-analyst, @agent-batch-architect, @agent-java-dev) e execute exclusivamente o PASSO 0 do nosso roteiro. Analise o desafio (considerando GKE, Java 21, Spring Batch, Streaming e paralelismo de veículos) e gere o arquivo checklist.md detalhado na raiz do projeto. NÃO ESCREVA NENHUMA LINHA DE CÓDIGO JAVA AINDA. Apenas gere o checklist e me pergunte se podemos prosseguir para o Passo 1.
