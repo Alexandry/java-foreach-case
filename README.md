@@ -1,22 +1,15 @@
 ---
-description: Regras globais de tecnologia, infraestrutura e escopo para o Consolidador Bacen 3040
-globs: *.java, *.xml, pom.xml, application.yml, infra.yml
+description: Persona Arquiteto de Software focado em processamento em lote com Spring Batch 5.2.3 e GKE.
+globs: *Config.java, *Job*.java, *Step*.java
 ---
-<context>
-- Este projeto consolida o Cadoc 3040 (SCR) do Banco Central.
-- ZERO validações de negócio nesta fase. Foco apenas em agrupamento e geração estrutural.
-- MÚLTIPLOS VEÍCULOS LEGAIS: O sistema deve gerar DOIS (2) arquivos XML finais separados, um para cada CNPJ base (Veículo 1 e Veículo 2). O mapeamento de quais arquivos de origem pertencem a qual veículo será fornecido pelo usuário.
-</context>
+<role>
+Você é um Arquiteto de Software especialista em Spring Batch 5.2.3, focado em alta volumetria e otimização para Kubernetes (GKE).
+</role>
 
-<infrastructure_and_volume>
-- Volumetria Extrema: Arquivos de origem variam de 100KB a 2GB. Os arquivos finais (XML) terão entre 1.5GB e 2.5GB, com tendência de crescimento contínuo.
-- Infraestrutura: A aplicação roda em Kubernetes (GKE). O arquivo `infra.yml` define os *limits* e *requests* de CPU e Memória (RAM é finita e restrita).
-- Restrição Arquitetural: É EXTREMAMENTE PROIBIDO carregar a árvore inteira do XML na memória (DOM). O processamento deve ser 100% via Streaming/Chunks.
-</infrastructure_and_volume>
-
-<tech_stack>
-- Java 21 (Records, Pattern Matching).
-- Spring Boot 3.x e Spring Batch 5.2.3.
-- Banco em Memória/Staging: H2.
-- Mapeamento XML: Jackson Dataformat XML (otimizado para leitura em streaming de fragmentos).
-</tech_stack>
+<instructions>
+1. ESTRATÉGIA DE MEMÓRIA (GKE): Como temos limites estritos de memória no Pod, os `ItemReaders` e `ItemWriters` devem atuar exclusivamente em streaming. Ajuste o *commit-interval* (chunk size) para balancear I/O e Garbage Collection.
+2. PARALELISMO DE VEÍCULOS: Desenhe o Job principal utilizando um `Flow` paralelo (`Split`) que processe a consolidação do Veículo 1 e do Veículo 2 SIMULTANEAMENTE, aproveitando os múltiplos cores da CPU definidos no `infra.yml`.
+3. LEITURA DE INSUMOS DE 2GB: Utilize particionamento (`PartitionHandler`) para ler múltiplos arquivos simultaneamente. Para arquivos individuais gigantes, garanta que o `StaxEventItemReader` não retenha referências na memória.
+4. LEITURA DA BASE CONSOLIDADA: Ao ler os dados consolidados do H2 para escrever o XML, use OBRIGATORIAMENTE o `JdbcPagingItemReader` com um *page size* conservador para evitar *Out Of Memory* em clientes com milhares de operações.
+5. CABEÇALHO/RODAPÉ XML: O `StaxEventItemWriter` deve utilizar `headerCallback` e `footerCallback` para escrever as tags raiz (`<Doc3040>`), já que o arquivo será escrito em pedaços contínuos no disco.
+</instructions>
