@@ -1,173 +1,743 @@
+Script de Validação da Primeira Camada Trusted
 
-Você está analisando um regulatório específico já tratado neste chat.
+1. Objetivo
 
-Contexto:
-Neste chat já existem informações sobre este regulatório, incluindo matriz de dados necessários, áreas fornecedoras, insumos, regras, normativos, leiautes, validações e observações levantadas anteriormente.
+Validar que os dados solicitados:
 
-Objetivo:
-Quero que você complemente a análise fazendo um mapeamento de relacionamento deste regulatório com outros regulatórios atendidos pelo banco.
+Foram corretamente extraídos pela Origem.
 
-A análise deve responder três perguntas:
+Foram integralmente disponibilizados na camada Raw.
 
-1. Este regulatório impacta algum outro regulatório?
-2. Este regulatório precisa ser conciliado, validado ou batido contra algum outro regulatório?
-3. Este regulatório serve como insumo, referência, base de validação ou base de comparação para algum outro regulatório?
+Percorreram corretamente o pipeline Raw → Trusted.
 
-Regras obrigatórias:
-- NÃO invente dependências.
-- NÃO invente batimentos.
-- NÃO invente regras de conciliação.
-- NÃO assuma que existe relação apenas porque os domínios são parecidos.
-- Só considere uma relação como confirmada se houver evidência no material deste chat, em normativo, leiaute, manual, FAQ, regra de validação, crítica do órgão regulador ou observação interna registrada.
-- Quando a relação parecer provável, mas não estiver comprovada, classifique como “não confirmado”.
-- Quando não houver evidência suficiente, escreva explicitamente “não identificado no material analisado”.
-- Diferencie claramente:
-  - insumo para geração;
-  - insumo para validação;
-  - conciliação/batimento;
-  - equivalência de classificação;
-  - dependência operacional;
-  - impacto indireto;
-  - apenas semelhança de domínio.
+Foram padronizados sem alteração indevida do significado.
 
-Definições que devem ser usadas:
+Estão aptos para utilização na construção dos dados regulatórios.
 
-1. Insumo para geração:
-Quando dados, arquivos, documentos ou informações deste regulatório são usados diretamente para gerar outro regulatório.
+Diretriz: a validação funcional pode ser realizada por amostragem dirigida. Quantidade, completude, integridade e reconciliação da ingestão devem considerar 100% da carga, preferencialmente por controles automatizados.
 
-2. Insumo para validação:
-Quando este regulatório não gera o outro, mas é usado para validar, comparar ou conferir outro regulatório.
+2. Papéis e responsabilidades
 
-3. Conciliação / batimento:
-Quando valores, saldos, posições, quantidades, classificações ou chaves precisam fechar entre este regulatório e outro.
+Responsável
 
-4. Equivalência:
-Quando existe uma tabela, regra ou mapeamento oficial entre classificações, modalidades, contas, códigos ou categorias de dois regulatórios.
+O que valida
 
-5. Dependência operacional:
-Quando o envio, fechamento, aceite ou processamento deste regulatório depende de outro envio, arquivo, sistema ou evento regulatório.
+Origem
 
-6. Impacto indireto:
-Quando uma divergência neste regulatório pode afetar análise, auditoria, questionamento, coerência ou governança de outro regulatório, mas sem evidência de batimento oficial.
+Se o dado solicitado foi disponibilizado corretamente e chegou à Raw
 
-Saída esperada:
+Engenharia de Dados
 
-## 1. Identificação do regulatório analisado
+Execução da ingestão, transformação, controles técnicos e disponibilização na Trusted
 
-Informe:
-- Nome/código do regulatório:
-- Órgão regulador:
-- Periodicidade, se conhecida:
-- Área(s) dona(s), se conhecidas:
-- Principais domínios de dados envolvidos:
-- Fontes/normativos considerados neste chat:
+Usuário requisitante/Negócio
 
-## 2. Relacionamentos encontrados
+Se os dados na Trusted representam o requisito solicitado e possuem significado funcional correto
 
-Monte uma tabela com as colunas abaixo:
+Engenharia/Arquitetura da plataforma
 
-| Regulatório analisado | Regulatório relacionado | Órgão do regulatório relacionado | Tipo de relação | Direção da relação | Descrição da relação | Evidência encontrada | Nível de confiança | Observações |
-|---|---|---|---|---|---|---|---|---|
+Evidências, rastreabilidade, tratamento de erros e resultado consolidado da validação
 
-Regras para preencher:
+3. Identificação da validação
 
-- Em “Tipo de relação”, use apenas:
-  - Insumo para geração
-  - Insumo para validação
-  - Conciliação / batimento
-  - Equivalência
-  - Dependência operacional
-  - Impacto indireto
-  - Não identificado
+Preencher antes da execução:
 
-- Em “Direção da relação”, use:
-  - Este regulatório → Outro regulatório
-  - Outro regulatório → Este regulatório
-  - Relação bidirecional
-  - Não identificado
+Campo
 
-- Em “Nível de confiança”, use:
-  - Confirmado
-  - Provável, mas não confirmado
-  - Não identificado
-  - Descartado
+Informação
 
-- Em “Evidência encontrada”, informe:
-  - trecho do normativo;
-  - regra do leiaute;
-  - crítica/validação;
-  - observação interna já existente no chat;
-  - ou escreva “não há evidência suficiente no material analisado”.
+Domínio/processo
 
-## 3. Conciliações e batimentos
 
-Se existirem batimentos ou conciliações, monte a tabela:
 
-| Regulatório A | Regulatório B | O que precisa bater | Chave/campo de comparação | Tipo de divergência possível | Evidência | Status |
-|---|---|---|---|---|---|---|
+Sistema de origem
 
-Regras:
-- Não invente campos.
-- Se a chave/campo não estiver documentada, escreva “não identificado”.
-- Se o batimento for apenas uma hipótese, classifique como “provável, mas não confirmado”.
-- Se não houver conciliação identificada, escreva: “Não foram identificadas conciliações formais no material analisado.”
 
-## 4. Regulatório como insumo para outro
 
-Monte uma tabela:
+Tabela/arquivo/API de origem
 
-| Regulatório origem | Regulatório destino | Tipo de insumo | O que é reaproveitado | Evidência | Status |
-|---|---|---|---|---|---|
 
-Tipos de insumo permitidos:
-- Arquivo regulatório
-- Saldo contábil
-- Classificação/modalidade
-- Evento de fechamento
-- Dados cadastrais
-- Dados transacionais
-- Dados fiscais
-- Dados de risco
-- Dados de posição
-- Não identificado
 
-Regras:
-- Se o regulatório não servir de insumo para outro, informe explicitamente.
-- Se houver apenas reaproveitamento de domínio de dados, mas não do regulatório em si, deixe isso claro.
+Dataset/tabela Raw
 
-## 5. Outros regulatórios que impactam este regulatório
 
-Monte uma tabela:
 
-| Regulatório origem | Este regulatório | Tipo de impacto | Descrição | Evidência | Status |
-|---|---|---|---|---|---|
+Dataset/tabela Trusted
 
-Use esta tabela para identificar se outro regulatório precisa existir, fechar, ser aceito ou estar consistente antes deste regulatório.
 
-## 6. Lacunas e dúvidas
 
-Liste tudo que não foi possível confirmar:
+Data de referência da carga
 
-| Dúvida / lacuna | Por que é importante | Onde validar | Prioridade |
-|---|---|---|---|
 
-Exemplos de lacunas:
-- Falta normativo oficial.
-- Falta manual de críticas.
-- Falta leiaute atualizado.
-- Falta confirmação da área regulatória.
-- Falta evidência de batimento com outro documento.
-- Falta regra de equivalência entre classificações.
 
-## 7. Conclusão objetiva
+Identificador da execução
 
-Finalize com:
 
-- Relações confirmadas:
-- Relações prováveis, mas não confirmadas:
-- Relações não identificadas:
-- Pontos que precisam ser validados com a área regulatória:
-- Risco de assumir dependência sem evidência:
 
-Importante:
-Se não houver evidência suficiente para qualquer relacionamento, não tente completar por inferência. Prefira uma resposta incompleta, mas correta, do que uma matriz cheia de relações não comprovadas.
+Responsável da Origem
+
+
+
+Responsável de Dados
+
+
+
+Usuário requisitante
+
+
+
+Requisito relacionado
+
+
+
+4. Validação da Origem → Raw
+
+Responsável principal: Origem, com evidências fornecidas pela Engenharia de Dados.
+
+Validação
+
+Como validar
+
+Resultado esperado
+
+Resultado obtido
+
+Status
+
+Evidência/observação
+
+Escopo solicitado
+
+Comparar campos e estruturas solicitados com o que foi ingerido
+
+Todos os dados acordados estão disponíveis
+
+
+
+
+
+
+
+Disponibilidade na Raw
+
+Consultar tabela, arquivo ou partição correspondente
+
+Carga disponível na data e no local esperados
+
+
+
+
+
+
+
+Quantidade de registros
+
+Comparar contagem da Origem com a Raw
+
+Quantidades reconciliadas
+
+
+
+
+
+
+
+Chaves de negócio
+
+Comparar quantidade de chaves e registros distintos
+
+Nenhuma chave perdida ou duplicada indevidamente
+
+
+
+
+
+
+
+Completude dos campos
+
+Verificar campos obrigatórios e percentual de nulos
+
+Resultado dentro dos limites acordados
+
+
+
+
+
+
+
+Período da carga
+
+Comparar data mínima, máxima e data de referência
+
+Período integralmente carregado
+
+
+
+
+
+
+
+Valores de controle
+
+Comparar somas, saldos ou totais financeiros
+
+Totais reconciliados
+
+
+
+
+
+
+
+Duplicidade
+
+Verificar duplicidade pela chave definida
+
+Nenhuma duplicidade não prevista
+
+
+
+
+
+
+
+Fidelidade à Origem
+
+Comparar amostra entre Origem e Raw
+
+Dados brutos sem transformação indevida
+
+
+
+
+
+
+
+4.1 Evidências mínimas
+
+Contagem da Origem e da Raw.
+
+Quantidade de chaves distintas.
+
+Data mínima e máxima.
+
+Quantidade e percentual de nulos nos campos críticos.
+
+Somatórios financeiros ou valores de controle relevantes.
+
+Registros selecionados para comparação.
+
+Identificador, data e horário da execução.
+
+4.2 Critério de aceite
+
+A Raw somente será considerada validada quando:
+
+O escopo solicitado estiver completamente disponível.
+
+As contagens estiverem reconciliadas ou com divergência formalmente justificada.
+
+Não houver perda de registros ou duplicidade indevida.
+
+Os dados permanecerem fiéis à Origem.
+
+5. Validação do pipeline Raw → Trusted
+
+Responsável principal: Engenharia de Dados.
+
+O sucesso técnico da execução não é suficiente. A validação deve demonstrar que toda a carga elegível foi corretamente processada.
+
+Validação
+
+Como validar
+
+Resultado esperado
+
+Resultado obtido
+
+Status
+
+Evidência/observação
+
+Execução do pipeline
+
+Consultar status e logs da execução
+
+Execução concluída com sucesso
+
+
+
+
+
+
+
+Leitura da carga correta
+
+Validar partição, data de referência e identificador da carga
+
+Pipeline processou a carga esperada
+
+
+
+
+
+
+
+Registros lidos
+
+Comparar volume lido com a Raw
+
+Todos os registros elegíveis foram lidos
+
+
+
+
+
+
+
+Registros gravados
+
+Comparar lidos, aprovados, rejeitados e gravados
+
+Balanço de processamento fechado
+
+
+
+
+
+
+
+Regras de transformação
+
+Validar conversões, padronizações e derivações
+
+Regras aplicadas conforme especificação
+
+
+
+
+
+
+
+Registros rejeitados
+
+Conferir quantidade, motivo e localização
+
+Rejeições rastreáveis e justificadas
+
+
+
+
+
+
+
+Idempotência
+
+Reexecutar controladamente a mesma carga
+
+Sem duplicação ou alteração indevida
+
+
+
+
+
+
+
+Tratamento de falhas
+
+Simular ou verificar comportamento em erro
+
+Falha identificada, registrada e recuperável
+
+
+
+
+
+
+
+Rastreabilidade
+
+Localizar um registro da Origem até a Trusted
+
+Linhagem ponta a ponta disponível
+
+
+
+
+
+
+
+Metadados técnicos
+
+Validar data da carga, origem, execução e referência
+
+Metadados preenchidos corretamente
+
+
+
+
+
+
+
+5.1 Balanço obrigatório da carga
+
+O processamento deve demonstrar a seguinte reconciliação:
+
+Registros Raw elegíveis
+= Registros gravados na Trusted
++ Registros rejeitados
++ Registros descartados por regra
+
+Todo descarte deve possuir regra, justificativa e evidência. Nenhum registro pode desaparecer durante o pipeline sem rastreabilidade.
+
+6. Validação da qualidade da Trusted
+
+Responsáveis: Engenharia de Dados e usuário requisitante, respeitando as respectivas responsabilidades técnica e funcional.
+
+Dimensão
+
+Validação
+
+Critério/limite
+
+Resultado obtido
+
+Status
+
+Evidência/observação
+
+Completude
+
+Campos obrigatórios preenchidos
+
+
+
+
+
+
+
+
+
+Unicidade
+
+Ausência de duplicidade nas chaves definidas
+
+
+
+
+
+
+
+
+
+Validade
+
+Tipos, formatos, domínios e intervalos corretos
+
+
+
+
+
+
+
+
+
+Consistência
+
+Campos relacionados não apresentam contradições
+
+
+
+
+
+
+
+
+
+Integridade referencial
+
+Relacionamentos e referências existentes
+
+
+
+
+
+
+
+
+
+Atualidade
+
+Dados correspondem à data de referência esperada
+
+
+
+
+
+
+
+
+
+Conformidade
+
+Padronização aplicada conforme regra definida
+
+
+
+
+
+
+
+
+
+Rastreabilidade
+
+Registro relacionado à Origem e à execução
+
+
+
+
+
+
+
+
+
+Exatidão funcional
+
+Valor representa corretamente o evento de negócio
+
+
+
+
+
+
+
+
+
+Regra de bloqueio: regras críticas devem ser avaliadas individualmente. Um índice geral de qualidade satisfatório não compensa o descumprimento de uma regra crítica para o processo regulatório.
+
+7. Validação funcional por amostragem dirigida
+
+Responsável principal: usuário que solicitou o requisito.
+
+A amostra deve cobrir, quando aplicável:
+
+Casos de maior volume ou valor financeiro.
+
+Casos comuns do processo.
+
+Casos de fronteira.
+
+Situações excepcionais.
+
+Registros com campos nulos permitidos.
+
+Diferentes produtos, modalidades e status.
+
+Registros transformados ou classificados por regras.
+
+Casos rejeitados pelos controles de qualidade.
+
+Pelo menos um registro de cada cenário funcional relevante.
+
+7.1 Registro da amostragem
+
+Identificador
+
+Cenário funcional
+
+Valor na Origem/Raw
+
+Valor esperado na Trusted
+
+Valor encontrado
+
+Regra aplicada
+
+Status
+
+Evidência/observação
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7.2 Confirmações do usuário requisitante
+
+Os campos solicitados foram disponibilizados.
+
+O significado dos dados foi preservado.
+
+As classificações e padronizações estão corretas.
+
+Os registros representam adequadamente o processo de negócio.
+
+Os dados estão aptos a alimentar a próxima etapa regulatória.
+
+8. Critérios de aprovação da Trusted
+
+A primeira camada Trusted será considerada aprovada quando:
+
+Origem → Raw estiver reconciliada.
+
+O pipeline tiver processado toda a carga elegível.
+
+Rejeições e descartes estiverem contabilizados e justificados.
+
+Regras críticas de qualidade estiverem atendidas.
+
+A amostragem funcional estiver aprovada pelo usuário requisitante.
+
+Divergências residuais tiverem plano de ação, responsável e prazo.
+
+Todas as evidências estiverem vinculadas ao identificador da carga.
+
+9. Resultado final
+
+Item
+
+Resultado
+
+Validação Origem → Raw
+
+Aprovado / Reprovado
+
+Validação do pipeline
+
+Aprovado / Reprovado
+
+Qualidade da Trusted
+
+Aprovado / Reprovado
+
+Validação funcional
+
+Aprovado / Reprovado
+
+Pendências bloqueantes
+
+
+
+Pendências não bloqueantes
+
+
+
+Responsável pelas correções
+
+
+
+Prazo para correção
+
+
+
+Necessidade de reprocessamento
+
+Sim / Não
+
+Parecer final
+
+Aprovado / Aprovado com ressalvas / Reprovado
+
+10. Aceites
+
+Os aceites devem ser registrados separadamente para evitar sobreposição de responsabilidades.
+
+10.1 Aceite da Origem
+
+Confirma que o dado correto foi disponibilizado e chegou integralmente à Raw.
+
+Nome
+
+Área
+
+Decisão
+
+Data
+
+Observação
+
+
+
+
+
+
+
+
+
+
+
+10.2 Aceite técnico de Dados
+
+Confirma a integridade da ingestão, transformação, qualidade técnica, reconciliação e rastreabilidade.
+
+Nome
+
+Área
+
+Decisão
+
+Data
+
+Observação
+
+
+
+
+
+
+
+
+
+
+
+10.3 Aceite funcional do requisitante
+
+Confirma que a Trusted atende ao requisito e preserva o significado funcional dos dados.
+
+Nome
+
+Área
+
+Decisão
+
+Data
+
+Observação
+
+
+
+
+
+
+
+
+
+
+
+11. Diretrizes de auditoria e rastreabilidade
+
+A Raw deve permanecer fiel ao dado recebido da Origem.
+
+Limpezas e padronizações devem ocorrer na Trusted conforme regras documentadas.
+
+Correções posteriores não devem apagar ou sobrescrever o histórico original.
+
+Deve ser possível reconstruir o caminho do registro desde a Origem até a Trusted.
+
+A trilha deve identificar o que entrou, o que foi transformado, o que foi rejeitado e o que foi disponibilizado.
+
+Reprocessamentos devem manter referência à carga e à execução anteriores.
+
